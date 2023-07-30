@@ -10,7 +10,7 @@ import java.util.Random;
 
 // avtotester test01
 public class DiaryTest {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         WebDriverManager.chromedriver().setup();
 
         WebDriver driver = new ChromeDriver();
