@@ -1,19 +1,36 @@
 package com.geekbrains.lesson3;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.util.Random;
+
 public class DiaryCookie {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         WebDriver driver = new ChromeDriver();
         driver.get("https://diary.ru");
 
-        Cookie cookie = new Cookie("_identity_", "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJnZWVrYnJhaW5zIiwiaWF0IjoxNjg0OTMwNzc2LCJhdWQiOlsiYWNjZXNzIl0sInVzZXJfaWQiOjc4ODg3NTAsInVzZXJfdXVpZCI6Ijg0MTE2NWY3LWVmZDktNDU4OS1iZmRlLTk1MjE5NjE1ZWI0OSIsInVwZiI6IndpbmRvd3MiLCJleHAiOjE2ODc1MjI3NzYsImF1dGhlbnRpY2F0YWJsZV9zYWx0IjoiJDJhJDExJHFEUzh0N1d3NDhtT0duY3MzSEQvQS4iLCJyb2xlcyI6WyJ1c2VyIl19.UoYMUNIxmGwBOBUezzgN9_loS9HoazIIGLJhW8PsWJZoueyQROqt7J_ao4lJtiPS2FkXYbaLplVlNq57MZQkn0fff_eUQBtyMI2qAA3JxPLYHaZQ0nUqjqQZsLzd1TbFjN-tlGDRlyJ7ae0FMF9vUx6ay2sDWOpAvzaMNCts51HZe3qQ1YqsHNdgwREq0uqQlny0z3YH1e52A0VKKeESXY8BPlDSPaI8d3O6C81G3nxycYioTVmEmEVQaSka7b0Nbq5B1BYu_BuAE-mXhq_CF5RU4tT4cHrp0Ks152C-31Eglf5twjXlR9wElpOAWdj6OfaMS3PEfWiA0NYeSxNrAQ");
-        driver.manage().addCookie(cookie);            // добавить куку
+        Cookie cookie = new Cookie("_identity_", "d52174a28d32798a97d4a7b01384d16dbf8e53fd231f3bbed6ca854ed5091db8a%3A2%3A%7Bi%3A0%3Bs%3A10%3A%22_identity_%22%3Bi%3A1%3Bs%3A52%3A%22%5B3585397%2C%22iOF8jFg-I9EAOpjxbZzcdMgLVEk1591e%22%2C2592000%5D%22%3B%7D");
+        driver.manage().addCookie(cookie);
         driver.navigate().refresh();                  // обновить страницу
-        driver.manage().getCookieNamed("_identity_"); // удалить куку
-        driver.quit();
+        //driver.manage().getCookieNamed("_identity_"); // удалить куку
 
+        driver.findElement(By.id("writeThisDiary")).click();
+        String postTitle = "Post" + new Random().nextInt(100);
+        driver.findElement(By.id("postTitle")).sendKeys(postTitle);
+
+        driver.switchTo().frame(driver.findElement(By.id("message_ifr")));
+        driver.findElement(By.id("tinymce")).sendKeys("text");
+        driver.switchTo().parentFrame();
+
+        driver.findElement(By.id("rewrite")).click();
+
+        driver.findElement(By.xpath(String.format("//a[text()='%s']", postTitle))).click();
+
+
+        Thread.sleep(3000);
+        driver.quit();
     }
 }
