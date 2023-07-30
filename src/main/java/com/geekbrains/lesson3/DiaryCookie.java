@@ -3,8 +3,10 @@ package com.geekbrains.lesson3;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.util.List;
 import java.util.Random;
 
 public class DiaryCookie {
@@ -27,8 +29,9 @@ public class DiaryCookie {
 
         driver.findElement(By.id("rewrite")).click();
 
-        driver.findElement(By.xpath(String.format("//a[text()='%s']", postTitle))).click();
-
+        //найти пост на странице используя фильтр по тексту
+        List<WebElement> postTitles = driver.findElements(By.xpath("//a[@class='title']"));
+        postTitles.stream().filter(p -> p.getText().equals(postTitle)).findFirst().get();
 
         Thread.sleep(3000);
         driver.quit();
