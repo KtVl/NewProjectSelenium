@@ -2,6 +2,11 @@ package lesson4;
 
 import com.geekbrains.lesson4.Functions;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
+
+import static com.geekbrains.lesson4.Functions.isPalindrome;
 
 
 public class FunctionsTest {
@@ -17,7 +22,7 @@ public class FunctionsTest {
     @Test
     @DisplayName("метод проверки палиндрома, где переданное значение палиндром")
     void givenPalindromeWhenCallIsPalindromeThenTrue() {
-        boolean result = Functions.isPalindrome("112211");
+        boolean result = isPalindrome("112211");
         Assertions.assertTrue(result);
         // Assertions.assertEquals(true, result);
     }
@@ -25,22 +30,36 @@ public class FunctionsTest {
     @Test
     @DisplayName("метод проверки палиндрома с пустым значением")
     void givenPalindromeWhenCallIsPalindromeThenTrueNull() {
-        boolean result = Functions.isPalindrome("");
+        boolean result = isPalindrome("");
         Assertions.assertTrue(result);
     }
 
     @Test
     @DisplayName("метод проверки палиндрома, где переданное значение меньше 2 символов")
     void givenPalindromeWhenCallIsPalindromeThenTrueOne() {
-        boolean result = Functions.isPalindrome("112211");
+        boolean result = isPalindrome("112211");
         Assertions.assertTrue(result);
     }
 
     @Test
     @DisplayName("метод проверки палиндрома, где переданное значение не палиндром")
     void givenPalindromeWhenCallIsPalindromeThenFalse() {
-        boolean result = Functions.isPalindrome("123456");
+        boolean result = isPalindrome("123456");
         Assertions.assertEquals(false, result);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"112211", "1123211"})
+    void isPalindromeTestWithDataProvider(String word) {
+        boolean result = isPalindrome(word);
+        Assertions.assertTrue(result);
+    }
+
+    @ParameterizedTest
+    @CsvSource({"123, false", "121, true"})
+    void csvTest(String word, boolean expectedResult) {
+        boolean actualResult = isPalindrome(word);
+        Assertions.assertEquals(expectedResult, actualResult);
     }
 
     @AfterEach
